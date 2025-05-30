@@ -14,10 +14,15 @@ function guardarJugadores() {
 }
 
 function agregarJugador() {
+  if (!modoEdicion) {
+    return alert("Activa modo edición para añadir jugadores.");
+  }
+
   const nombre = document.getElementById("nombre").value.trim();
   const posicion = document.getElementById("posicion").value;
   if (!nombre) return alert("Introduce un nombre válido");
   if (jugadores.find(j => j.nombre === nombre)) return alert("Jugador ya existe");
+
   jugadores.push({ nombre, posicion, goles:0, asistencias:0, amarillas:0, rojas:0, partidos:0, puntos:0 });
   guardarJugadores();
   document.getElementById("nombre").value = "";
@@ -25,6 +30,13 @@ function agregarJugador() {
   actualizarTodo();
   mostrarSeleccionJugadores();
 }
+function actualizarEstadoBotonAgregar() {
+  const btn = document.getElementById("btn-agregar-jugador");
+  btn.disabled = !modoEdicion;
+  btn.style.opacity = modoEdicion ? "1" : "0.5";
+  btn.style.cursor = modoEdicion ? "pointer" : "not-allowed";
+}
+
 
 function actualizarTodo() {
   actualizarTablaJugadores();

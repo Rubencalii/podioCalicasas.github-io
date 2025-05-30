@@ -7,7 +7,43 @@
 <title>⚽ Estadísticas de Fútbol</title>
 </head>
 <body>
+<section>
+  <h2>🏆 Estadísticas destacadas</h2>
 
+  <div id="estadisticas-container">
+    <div class="table-wrapper">
+      <h3>🥇 Top Goles</h3>
+      <table id="tabla-goles">
+        <thead><tr><th>👤 Jugador</th><th>🥅 Goles</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="table-wrapper">
+      <h3>🎯 Top Asistencias</h3>
+      <table id="tabla-asistencias">
+        <thead><tr><th>👤 Jugador</th><th>🎯 Asistencias</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="table-wrapper">
+      <h3>🟨🟥 Top Tarjetas</h3>
+      <table id="tabla-tarjetas">
+        <thead><tr><th>👤 Jugador</th><th>🟨+🟥 Tarjetas</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <div class="table-wrapper">
+      <h3>⚡ Top Eficiencia (Goles+Asistencias / Partidos)</h3>
+      <table id="tabla-eficiencia">
+        <thead><tr><th>👤 Jugador</th><th>⚡ Eficiencia</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
 <h1>⚽ Gestión de Estadísticas de Fútbol</h1>
 
 <section>
@@ -19,7 +55,7 @@
     <option value="DEF">🛡️ Defensa (DEF)</option>
     <option value="POR">🧤 Portero (POR)</option>
   </select>
-  <button onclick="agregarJugador()">➕ Añadir jugador</button>
+ <button id="btn-agregar-jugador" onclick="agregarJugador()">➕ Añadir jugador</button>
 </section>
 
 <hr />
@@ -52,18 +88,26 @@
 
 <section>
   <h2>📝 Registrar Partido</h2>
-  <label>Equipo 1 (cantidad):
-    <input type="number" id="cantidad-jugadores-eq1" min="1" max="11" value="5" onchange="mostrarSeleccionJugadores()" />
-  </label>
-  <div id="seleccion-jugadores-eq1"></div>
 
-  <label>Equipo 2 (cantidad):
-    <input type="number" id="cantidad-jugadores-eq2" min="1" max="11" value="5" onchange="mostrarSeleccionJugadores()" />
-  </label>
-  <div id="seleccion-jugadores-eq2"></div>
+  <div id="registro-equipos-container">
+    <div class="equipo-registro">
+      <label>Equipo 1 (cantidad):
+        <input type="number" id="cantidad-jugadores-eq1" min="1" max="11" value="5" onchange="mostrarSeleccionJugadores()" />
+      </label>
+      <div id="seleccion-jugadores-eq1"></div>
+    </div>
+
+    <div class="equipo-registro">
+      <label>Equipo 2 (cantidad):
+        <input type="number" id="cantidad-jugadores-eq2" min="1" max="11" value="5" onchange="mostrarSeleccionJugadores()" />
+      </label>
+      <div id="seleccion-jugadores-eq2"></div>
+    </div>
+  </div>
 
   <button onclick="registrarPartido()">⚽ Registrar partido</button>
 </section>
+
 
 <hr />
 
@@ -73,43 +117,6 @@
 </section>
 
 <hr />
-
-<section>
-  <h2>🏆 Estadísticas destacadas</h2>
-
-  <h3>🥇 Top Goles</h3>
-  <div class="table-wrapper">
-    <table id="tabla-goles">
-      <thead><tr><th>👤 Jugador</th><th>🥅 Goles</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <h3>🎯 Top Asistencias</h3>
-  <div class="table-wrapper">
-    <table id="tabla-asistencias">
-      <thead><tr><th>👤 Jugador</th><th>🎯 Asistencias</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <h3>🟨🟥 Top Tarjetas</h3>
-  <div class="table-wrapper">
-    <table id="tabla-tarjetas">
-      <thead><tr><th>👤 Jugador</th><th>🟨+🟥 Tarjetas</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <h3>⚡ Top Eficiencia (Goles+Asistencias / Partidos)</h3>
-  <div class="table-wrapper">
-    <table id="tabla-eficiencia">
-      <thead><tr><th>👤 Jugador</th><th>⚡ Eficiencia</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </div>
-</section>
-
 <hr />
 
 <section>
