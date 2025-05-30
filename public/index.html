@@ -1,56 +1,124 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Podio Calicasas - Clasificación de Jugadores</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="style.css">
+<title>⚽ Estadísticas de Fútbol</title>
 </head>
 <body>
-  <h1>Podio Calicasas</h1>
 
-  <section id="formulario">
-    <h2>Agregar jugador</h2>
-    <form id="formularioJugadores">
-      <label for="nombre">Nombre:</label>
-      <input type="text" id="nombre" name="nombre" required />
+<h1>⚽ Gestión de Estadísticas de Fútbol</h1>
 
-      <label for="posicion">Posición:</label>
-      <select id="posicion" name="posicion" required>
-        <option value="defensa">Defensa</option>
-        <option value="medio">Medio</option>
-        <option value="delantero">Delantero</option>
-      </select>
+<section>
+  <h2>➕ Agregar nuevo jugador</h2>
+  <input type="text" id="nombre" placeholder="🧑 Nombre del jugador" />
+  <select id="posicion" title="Posición">
+    <option value="DEL">⚡ Delantero (DEL)</option>
+    <option value="MED">🎯 Mediocampista (MED)</option>
+    <option value="DEF">🛡️ Defensa (DEF)</option>
+    <option value="POR">🧤 Portero (POR)</option>
+  </select>
+  <button onclick="agregarJugador()">➕ Añadir jugador</button>
+</section>
 
-      <label for="goles">Goles:</label>
-      <input type="number" id="goles" name="goles" min="0" value="0" />
+<hr />
 
-      <label for="asistencias">Asistencias:</label>
-      <input type="number" id="asistencias" name="asistencias" min="0" value="0" />
+<section>
+  <h2>📋 Jugadores registrados</h2>
+  <div class="table-wrapper">
+    <table id="tabla-jugadores">
+      <thead>
+        <tr>
+          <th>👤 Nombre</th>
+          <th>📌 Posición</th>
+          <th>🥅 Goles</th>
+          <th>🎯 Asistencias</th>
+          <th>🟨 Amarillas</th>
+          <th>🟥 Rojas</th>
+          <th>⚽ Partidos</th>
+          <th>⭐ Puntos</th>
+          <th>🗑️ Acción</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <button onclick="activarModoEdicion()">🔒 Activar edición</button>
+  <button id="btn-reset" disabled>🗑️ Borrar partido actual</button>
+</section>
 
-      <label for="amarillas">Tarjetas Amarillas:</label>
-      <input type="number" id="amarillas" name="amarillas" min="0" value="0" />
+<hr />
 
-      <label for="rojas">Tarjetas Rojas:</label>
-      <input type="number" id="rojas" name="rojas" min="0" value="0" />
+<section>
+  <h2>📝 Registrar Partido</h2>
+  <label>Equipo 1 (cantidad):
+    <input type="number" id="cantidad-jugadores-eq1" min="1" max="11" value="5" onchange="mostrarSeleccionJugadores()" />
+  </label>
+  <div id="seleccion-jugadores-eq1"></div>
 
-      <label for="equipo">Equipo:</label>
-      <input type="text" id="equipo" name="equipo" required />
+  <label>Equipo 2 (cantidad):
+    <input type="number" id="cantidad-jugadores-eq2" min="1" max="11" value="5" onchange="mostrarSeleccionJugadores()" />
+  </label>
+  <div id="seleccion-jugadores-eq2"></div>
 
-      <button type="submit">Agregar</button>
-    </form>
-  </section>
+  <button onclick="registrarPartido()">⚽ Registrar partido</button>
+</section>
 
-  <section id="tablaJugadores">
-    <h2>Jugadores</h2>
-    <!-- Aquí se insertará la tabla con JS -->
-  </section>
+<hr />
 
-  <section id="campo">
-    <h2>8 Ideal</h2>
-    <!-- Aquí se mostrará el campo con los 8 jugadores -->
-  </section>
+<section>
+  <h2>🛠️ Editar datos del partido actual (modo edición)</h2>
+  <div id="form-editar-partido"></div>
+</section>
 
-  <script src="app.js"></script>
+<hr />
+
+<section>
+  <h2>🏆 Estadísticas destacadas</h2>
+
+  <h3>🥇 Top Goles</h3>
+  <div class="table-wrapper">
+    <table id="tabla-goles">
+      <thead><tr><th>👤 Jugador</th><th>🥅 Goles</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <h3>🎯 Top Asistencias</h3>
+  <div class="table-wrapper">
+    <table id="tabla-asistencias">
+      <thead><tr><th>👤 Jugador</th><th>🎯 Asistencias</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <h3>🟨🟥 Top Tarjetas</h3>
+  <div class="table-wrapper">
+    <table id="tabla-tarjetas">
+      <thead><tr><th>👤 Jugador</th><th>🟨+🟥 Tarjetas</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <h3>⚡ Top Eficiencia (Goles+Asistencias / Partidos)</h3>
+  <div class="table-wrapper">
+    <table id="tabla-eficiencia">
+      <thead><tr><th>👤 Jugador</th><th>⚡ Eficiencia</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<hr />
+
+<section>
+  <h2>⭐ 8 Ideal del Día</h2>
+  <button onclick="generar8Ideal()">📊 Ver 8 Ideal</button>
+  <div id="ocho-ideal"></div>
+</section>
+
+<script src="java.js"></script>
+
 </body>
 </html>
