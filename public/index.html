@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css" />
+<link rel="icon" href="https://www.marefa.org/w/images/thumb/5/57/Escudo_de_Calicasas_(Granada).svg/640px-Escudo_de_Calicasas_(Granada).svg.png">
 <title>⚽ Estadísticas de Fútbol</title>
 </head>
 <body>
@@ -46,18 +47,6 @@
 </section>
 <h1>⚽ Gestión de Estadísticas de Fútbol</h1>
 
-<section>
-  <h2>➕ Agregar nuevo jugador</h2>
-  <input type="text" id="nombre" placeholder="🧑 Nombre del jugador" />
-  <select id="posicion" title="Posición">
-    <option value="DEL">⚡ Delantero (DEL)</option>
-    <option value="MED">🎯 Mediocampista (MED)</option>
-    <option value="DEF">🛡️ Defensa (DEF)</option>
-    <option value="POR">🧤 Portero (POR)</option>
-  </select>
- <button id="btn-agregar-jugador" onclick="agregarJugador()">➕ Añadir jugador</button>
-</section>
-
 <hr />
 
 <section>
@@ -87,6 +76,18 @@
 <hr />
 
 <section>
+  <h2>➕ Agregar nuevo jugador</h2>
+  <input type="text" id="nombre" placeholder="🧑 Nombre del jugador" />
+  <select id="posicion" title="Posición">
+    <option value="DEL">⚡ Delantero (DEL)</option>
+    <option value="MED">🎯 Mediocampista (MED)</option>
+    <option value="DEF">🛡️ Defensa (DEF)</option>
+    <option value="POR">🧤 Portero (POR)</option>
+  </select>
+  <button id="btn-agregar-jugador" onclick="agregarJugador()">➕ Añadir jugador</button>
+</section>
+
+<section>
   <h2>📝 Registrar Partido</h2>
 
   <div id="registro-equipos-container">
@@ -107,7 +108,6 @@
 
   <button onclick="registrarPartido()">⚽ Registrar partido</button>
 </section>
-
 
 <hr />
 
