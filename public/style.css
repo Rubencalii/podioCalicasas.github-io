@@ -1,196 +1,276 @@
-/* style.css */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
-  font-family: 'Montserrat', sans-serif;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-  color: #fff;
-  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #00741d;
+  color: #f0f0f0;  /* texto claro para contraste con verde */
+  line-height: 1.6;
   padding: 20px;
+  min-height: 100vh;
 }
 
-h1, h2, h3 {
+/* Título principal */
+h1 {
   text-align: center;
-  margin-bottom: 15px;
-  font-weight: 700;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+  font-size: 3rem;
+  margin-bottom: 30px;
+  color: #000000; /* azul oscuro */
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  font-weight: 900;
 }
 
-section {
-  background-color: rgba(0, 0, 0, 0.5);
-  margin: 20px auto;
-  padding: 20px;
-  border-radius: 15px;
-  max-width: 1100px;
-  box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.4);
-}
-
-hr {
-  border: 1px solid #4caf50;
-  max-width: 1100px;
-  margin: 30px auto;
-}
-
-#estadisticas-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+/* Contenedor tablas superiores */
+.top-tables {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
   gap: 20px;
+  margin-bottom: 40px;
 }
 
-.table-wrapper {
-  background-color: #115740;
-  border-radius: 10px;
-  padding: 10px 15px;
-  flex: 1 1 250px;
-  box-shadow: inset 0 0 10px #1ec54c;
-}
-
-.table-wrapper h3 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: #a0f5a0;
-  text-align: center;
-  font-size: 1.2em;
-  text-shadow: 0 0 5px #67d967;
-}
-
+/* Estilo tablas */
 table {
   width: 100%;
   border-collapse: collapse;
-  color: #e0e0e0;
-  font-size: 0.95em;
+  background: #1b4d1b;  /* verde oscuro para tabla */
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  color: #f0f0f0; /* texto claro dentro tabla */
 }
 
-thead th {
-  background-color: #1b4d23;
-  padding: 10px 8px;
-  text-align: center;
-  border-radius: 5px 5px 0 0;
-  text-shadow: 1px 1px 2px #000;
-  font-weight: 600;
-}
-
-tbody tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-tbody td {
-  padding: 8px 10px;
-  text-align: center;
-}
-
-button {
-  background-color: #1ec54c;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 30px;
-  color: #063b06;
+/* Caption como título de tabla */
+caption {
+  background-color: #28a428; /* verde más brillante */
+  color: white;
   font-weight: 700;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  margin-top: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  padding: 12px 0;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  user-select: none;
 }
 
-button:hover:not(:disabled) {
-  background-color: #28d14e;
-  color: #021f01;
-  box-shadow: 0 6px 12px #25bc46;
-}
-
-button:disabled {
-  background-color: #555;
-  cursor: not-allowed;
-  color: #999;
-  box-shadow: none;
-}
-
-input[type="text"],
-select,
-input[type="number"] {
-  padding: 8px 12px;
-  margin: 5px 0 15px 0;
-  border-radius: 8px;
-  border: none;
-  font-size: 1em;
-  width: 100%;
-  max-width: 300px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: inset 0 0 5px #1ec54c;
-  background-color: #0c2b12;
-  color: #b9f5b9;
-}
-
-label {
-  font-weight: 600;
-  display: block;
-  margin-bottom: 6px;
+/* Encabezados */
+thead th {
+  background-color: #28a428; 
+  color: white;
+  padding: 10px;
   text-align: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-bottom: 2px solid #196619;
 }
 
-#registro-equipos-container {
+/* Filas */
+tbody tr {
+  border-bottom: 1px solid #3a773a;
+  transition: background-color 0.3s ease;
+}
+
+tbody tr:hover {
+  background-color: #3a773a; /* verde más claro al pasar el mouse */
+}
+
+/* Celdas */
+td {
+  text-align: center;
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #e0e0e0;
+}
+
+/* Inputs numéricos en edición */
+input[type="number"] {
+  width: 60px;
+  padding: 5px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  border: 1px solid #5aa75a;
+  text-align: center;
+  background: #d6f0d6;
+  color: #144214;
+  transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+  border-color: #196619;
+  outline: none;
+}
+
+/* Botones pequeños en filas de edición */
+button {
+  background-color: #196619;
+  color: white;
+  border: none;
+  padding: 6px 8px;
+  margin: 2px 1px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+button:hover {
+  background-color: #28a428;
+}
+
+/* Botones principales */
+#btn-editar, 
+button[onclick="cerrarEdicion()"], 
+.add-player button,
+#panel-partido button {
+  display: inline-block;
+  background-color: #28a428;
+  color: white;
+  border-radius: 30px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.25s ease;
+  user-select: none;
+}
+
+#btn-editar:hover,
+button[onclick="cerrarEdicion()"]:hover,
+.add-player button:hover,
+#panel-partido button:hover {
+  background-color: #196619;
+}
+
+/* Panel edición */
+#panel-edicion {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #c8e6c9;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(25, 118, 210, 0.3);
+  color: #144214;
+}
+
+/* Formulario añadir jugador */
+.add-player {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-player input[type="text"] {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 30px;
+  border: 1px solid #5aa75a;
+  width: 250px;
+  transition: border-color 0.3s ease;
+  color: #144214;
+}
+
+.add-player input[type="text"]:focus {
+  border-color: #196619;
+  outline: none;
+}
+
+.add-player select {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 30px;
+  border: 1px solid #5aa75a;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  color: #144214;
+}
+
+.add-player select:focus {
+  border-color: #196619;
+  outline: none;
+}
+
+/* Contenedor del partido */
+#panel-partido {
+  margin-top: 40px;
+  background-color: #d0f0d0;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(57, 145, 57, 0.2);
+  color: #144214;
+}
+
+/* Selección equipos */
+.equipo-select {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 20px;
 }
 
-.equipo-registro {
+.equipo-select div {
   flex: 1 1 300px;
-  background-color: #164e1f;
-  padding: 15px 10px;
-  border-radius: 12px;
-  box-shadow: inset 0 0 10px #3de04d;
+  min-width: 280px;
+  max-width: 350px;
 }
 
-#seleccion-jugadores-eq1 select,
-#seleccion-jugadores-eq2 select {
+.equipo-select label {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #196619;
+  user-select: none;
+}
+
+/* Select múltiple */
+select[multiple] {
   width: 100%;
-  margin-bottom: 10px;
-  background-color: #0c2b12;
-  color: #b9f5b9;
-  border-radius: 8px;
-  border: none;
-  padding: 6px 10px;
-  box-shadow: inset 0 0 6px #1ec54c;
-  font-weight: 600;
+  height: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #5aa75a;
+  font-size: 1rem;
   cursor: pointer;
+  background-color: #e6f4e6;
+  color: #144214;
+  transition: border-color 0.3s ease;
 }
 
-#form-editar-partido {
-  max-height: 320px;
-  overflow-y: auto;
-  background-color: #113217;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: inset 0 0 15px #20db20;
+select[multiple]:focus {
+  border-color: #196619;
+  outline: none;
 }
 
-#form-editar-partido table {
-  margin: 0 auto;
-  width: 100%;
+/* Tabla 7 ideal partido */
+#tabla-7ideal-partido {
+  margin-top: 20px;
 }
 
-#form-editar-partido input[type="number"] {
-  width: 50px;
-  text-align: center;
-  font-weight: 600;
-}
-
-@media (max-width: 700px) {
-  #estadisticas-container {
+/* Responsive */
+@media (max-width: 768px) {
+  .top-tables {
+    grid-template-columns: 1fr 1fr;
+  }
+  .equipo-select {
     flex-direction: column;
     align-items: center;
   }
-  #registro-equipos-container {
+  .equipo-select div {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-tables {
+    grid-template-columns: 1fr;
+  }
+  .add-player {
     flex-direction: column;
-    align-items: center;
+  }
+  .add-player input, .add-player select, .add-player button {
+    width: 100%;
   }
 }

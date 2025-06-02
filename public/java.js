@@ -1,309 +1,255 @@
-// Datos iniciales
-let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
+  let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
 
-// Modo edición control (simple)
-let modoEdicion = false;
+  const password = "Rcorralr123";
 
-// Variables para los jugadores del partido actual
-let jugadoresHoyEq1 = JSON.parse(localStorage.getItem("jugadoresHoyEq1")) || [];
-let jugadoresHoyEq2 = JSON.parse(localStorage.getItem("jugadoresHoyEq2")) || [];
-
-// Funciones básicas
-function guardarJugadores() {
-  localStorage.setItem("jugadores", JSON.stringify(jugadores));
-}
-
-function agregarJugador() {
-  if (!modoEdicion) {
-    return alert("Activa modo edición para añadir jugadores.");
+  function guardar() {
+    localStorage.setItem("jugadores", JSON.stringify(jugadores));
   }
 
-  const nombre = document.getElementById("nombre").value.trim();
-  const posicion = document.getElementById("posicion").value;
-  if (!nombre) return alert("Introduce un nombre válido");
-  if (jugadores.find(j => j.nombre === nombre)) return alert("Jugador ya existe");
-
-  jugadores.push({ nombre, posicion, goles:0, asistencias:0, amarillas:0, rojas:0, partidos:0, puntos:0 });
-  guardarJugadores();
-  document.getElementById("nombre").value = "";
-  document.getElementById("posicion").value = "DEL";
-  actualizarTodo();
-  mostrarSeleccionJugadores();
-}
-function actualizarEstadoBotonAgregar() {
-  const btn = document.getElementById("btn-agregar-jugador");
-  btn.disabled = !modoEdicion;
-  btn.style.opacity = modoEdicion ? "1" : "0.5";
-  btn.style.cursor = modoEdicion ? "pointer" : "not-allowed";
-}
-
-
-function actualizarTodo() {
-  actualizarTablaJugadores();
-  actualizarTopTablas();
-}
-
-function actualizarTablaJugadores() {
-  const tbody = document.querySelector("#tabla-jugadores tbody");
-  tbody.innerHTML = "";
-  jugadores.forEach((j, i) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${j.nombre}</td>
-      <td>${j.posicion}</td>
-      <td>${j.goles}</td>
-      <td>${j.asistencias}</td>
-      <td>${j.amarillas}</td>
-      <td>${j.rojas}</td>
-      <td>${j.partidos}</td>
-      <td>${j.puntos.toFixed(2)}</td>
-      <td><button onclick="borrarJugador(${i})">Eliminar</button></td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function borrarJugador(index) {
-  if (!modoEdicion) return alert("Activa modo edición para eliminar jugadores");
-  jugadores.splice(index, 1);
-  guardarJugadores();
-  actualizarTodo();
-  mostrarSeleccionJugadores();
-}
-
-function activarModoEdicion() {
-  if (modoEdicion) {
-    // Desactivar
-    modoEdicion = false;
-    document.querySelector("button[onclick='activarModoEdicion()']").textContent = "🔒 Activar edición";
-    document.getElementById("btn-reset").disabled = true;
-    document.getElementById("form-editar-partido").innerHTML = "";
-    alert("Modo edición desactivado");
-    return;
-  }
-  // Activar
-  const pass = prompt("Introduce la contraseña para modo edición:");
-  if(pass === "Rcorralr123") {
-    modoEdicion = true;
-    document.querySelector("button[onclick='activarModoEdicion()']").textContent = "🔓 Desactivar edición";
-    document.getElementById("btn-reset").disabled = false;
-    mostrarFormularioEditarPartido();
-  } else {
-    alert("Contraseña incorrecta");
-  }
-}
-
-
-// Mostrar o esconder formulario para editar datos del partido actual
-function mostrarFormularioEditarPartido() {
-  // Si no hay jugadores seleccionados, no mostramos
-  jugadoresHoyEq1 = JSON.parse(localStorage.getItem("jugadoresHoyEq1")) || [];
-  jugadoresHoyEq2 = JSON.parse(localStorage.getItem("jugadoresHoyEq2")) || [];
-  if(jugadoresHoyEq1.length === 0 && jugadoresHoyEq2.length === 0) {
-    alert("No hay jugadores seleccionados para el partido. Registra un partido primero.");
-    return;
-  }
-  
-  const cont = document.getElementById("form-editar-partido");
-  cont.innerHTML = ""; // limpio
-  
-  const tabla = document.createElement("table");
-  tabla.border = "1";
-  const header = document.createElement("tr");
-  header.innerHTML = `<th>Jugador</th><th>Goles</th><th>Asistencias</th><th>Amarillas</th><th>Rojas</th>`;
-  tabla.appendChild(header);
-
-  function crearFila(nombre) {
-    const jugador = jugadores.find(j => j.nombre === nombre);
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${nombre}</td>
-      <td><input type="number" min="0" value="0" id="goles-${nombre}"></td>
-      <td><input type="number" min="0" value="0" id="asistencias-${nombre}"></td>
-      <td><input type="number" min="0" value="0" id="amarillas-${nombre}"></td>
-      <td><input type="number" min="0" value="0" id="rojas-${nombre}"></td>
-    `;
-    return tr;
-  }
-
-  jugadoresHoyEq1.forEach(n => tabla.appendChild(crearFila(n)));
-  jugadoresHoyEq2.forEach(n => tabla.appendChild(crearFila(n)));
-
-  cont.appendChild(tabla);
-
-  // Botón guardar
-  const btnGuardar = document.createElement("button");
-  btnGuardar.textContent = "Guardar datos del partido";
-  btnGuardar.onclick = guardarDatosPartido;
-  cont.appendChild(btnGuardar);
-
-  // Botón borrar datos partido actual
-  const btnBorrar = document.createElement("button");
-  btnBorrar.textContent = "Borrar datos del partido actual";
-  btnBorrar.style.marginLeft = "10px";
-  btnBorrar.onclick = borrarDatosPartidoActual;
-  cont.appendChild(btnBorrar);
-}
-
-function guardarDatosPartido() {
-  // Por cada jugador de los equipos, sumamos lo que haya en inputs a sus registros totales
-  jugadoresHoyEq1.concat(jugadoresHoyEq2).forEach(nombre => {
-    const jugador = jugadores.find(j => j.nombre === nombre);
-    if(!jugador) return;
-
-    const goles = parseInt(document.getElementById(`goles-${nombre}`).value) || 0;
-    const asistencias = parseInt(document.getElementById(`asistencias-${nombre}`).value) || 0;
-    const amarillas = parseInt(document.getElementById(`amarillas-${nombre}`).value) || 0;
-    const rojas = parseInt(document.getElementById(`rojas-${nombre}`).value) || 0;
-
-    jugador.goles += goles;
-    jugador.asistencias += asistencias;
-    jugador.amarillas += amarillas;
-    jugador.rojas += rojas;
-  });
-
-  guardarJugadores();
-  actualizarTodo();
-  alert("Datos del partido guardados correctamente");
-}
-
-function borrarDatosPartidoActual() {
-  if(!confirm("¿Seguro que quieres borrar los datos del partido actual? Esto no borrará los registros totales.")) return;
-  // Simplemente quitamos los jugadores del partido actual (los seleccionados) para poder registrar otro partido nuevo
-  localStorage.removeItem("jugadoresHoyEq1");
-  localStorage.removeItem("jugadoresHoyEq2");
-  jugadoresHoyEq1 = [];
-  jugadoresHoyEq2 = [];
-  document.getElementById("form-editar-partido").innerHTML = "";
-  alert("Datos del partido actual borrados. Ya puedes registrar otro partido.");
-}
-
-// Mostrar selección de jugadores para equipos con posición visible
-function mostrarSeleccionJugadores() {
-  const cantidadEq1 = parseInt(document.getElementById("cantidad-jugadores-eq1").value);
-  const cantidadEq2 = parseInt(document.getElementById("cantidad-jugadores-eq2").value);
-
-  const contenedorEq1 = document.getElementById("seleccion-jugadores-eq1");
-  contenedorEq1.innerHTML = "";
-  for(let i=0; i<cantidadEq1; i++) {
-    const select = document.createElement("select");
-    select.id = `jugador-eq1-${i}`;
+  function actualizarTablaSoloLectura() {
+    const tbody = document.getElementById("tabla-jugadores-body-solo-lectura");
+    tbody.innerHTML = "";
     jugadores.forEach(j => {
-      const option = document.createElement("option");
-      option.value = j.nombre;
-      option.textContent = `${j.nombre} (${j.posicion})`;
-      select.appendChild(option);
+      tbody.innerHTML += `
+        <tr>
+          <td>${j.nombre}</td>
+          <td>${j.posicion}</td>
+          <td>${j.goles || 0}</td>
+          <td>${j.asistencias || 0}</td>
+          <td>${j.amarillas || 0}</td>
+          <td>${j.rojas || 0}</td>
+          <td>${j.partidos || 0}</td>
+          <td>${j.posicion === "PT" ? (j.encajados || 0) : "-"}</td>
+        </tr>
+      `;
     });
-    contenedorEq1.appendChild(select);
-    contenedorEq1.appendChild(document.createElement("br"));
   }
 
-  const contenedorEq2 = document.getElementById("seleccion-jugadores-eq2");
-  contenedorEq2.innerHTML = "";
-  for(let i=0; i<cantidadEq2; i++) {
-    const select = document.createElement("select");
-    select.id = `jugador-eq2-${i}`;
+  function actualizarTablaPrincipal() {
+    const tbody = document.getElementById("tabla-jugadores-body");
+    tbody.innerHTML = "";
     jugadores.forEach(j => {
-      const option = document.createElement("option");
-      option.value = j.nombre;
-      option.textContent = `${j.nombre} (${j.posicion})`;
-      select.appendChild(option);
+      const encajadosInput = j.posicion === "PT" ? 
+        `<input type="number" min="0" value="${j.encajados || 0}" onchange="modValue('${j.nombre}','encajados',this.value)" />` : "-";
+      tbody.innerHTML += `
+        <tr>
+          <td>${j.nombre}</td>
+          <td>${j.posicion}</td>
+          <td><input type="number" min="0" value="${j.goles || 0}" onchange="modValue('${j.nombre}','goles',this.value)" /></td>
+          <td><input type="number" min="0" value="${j.asistencias || 0}" onchange="modValue('${j.nombre}','asistencias',this.value)" /></td>
+          <td><input type="number" min="0" value="${j.amarillas || 0}" onchange="modValue('${j.nombre}','amarillas',this.value)" /></td>
+          <td><input type="number" min="0" value="${j.rojas || 0}" onchange="modValue('${j.nombre}','rojas',this.value)" /></td>
+          <td><input type="number" min="0" value="${j.partidos || 0}" onchange="modValue('${j.nombre}','partidos',this.value)" /></td>
+          <td>${encajadosInput}</td>
+          <td>
+            <button onclick="mod('${j.nombre}','goles',1)">+⚽</button>
+            <button onclick="mod('${j.nombre}','goles',-1)">-⚽</button>
+            <button onclick="mod('${j.nombre}','asistencias',1)">+🅰️</button>
+            <button onclick="mod('${j.nombre}','asistencias',-1)">-🅰️</button>
+            <button onclick="mod('${j.nombre}','amarillas',1)">+🟨</button>
+            <button onclick="mod('${j.nombre}','amarillas',-1)">-🟨</button>
+            <button onclick="mod('${j.nombre}','rojas',1)">+🟥</button>
+            <button onclick="mod('${j.nombre}','rojas',-1)">-🟥</button>
+            <button onclick="mod('${j.nombre}','partidos',1)">+🎮</button>
+            <button onclick="mod('${j.nombre}','partidos',-1)">-🎮</button>
+            <button onclick="eliminarJugador('${j.nombre}')">Eliminar</button>
+          </td>
+        </tr>
+      `;
     });
-    contenedorEq2.appendChild(select);
-    contenedorEq2.appendChild(document.createElement("br"));
-  }
-}
-
-// Registrar partido: incrementar partidos y guardar jugadores de ambos equipos
-function registrarPartido() {
-  const cantidadEq1 = parseInt(document.getElementById("cantidad-jugadores-eq1").value);
-  const cantidadEq2 = parseInt(document.getElementById("cantidad-jugadores-eq2").value);
-
-  const nombresEq1 = [];
-  for(let i=0; i<cantidadEq1; i++) {
-    const sel = document.getElementById(`jugador-eq1-${i}`);
-    if(sel) nombresEq1.push(sel.value);
   }
 
-  const nombresEq2 = [];
-  for(let i=0; i<cantidadEq2; i++) {
-    const sel = document.getElementById(`jugador-eq2-${i}`);
-    if(sel) nombresEq2.push(sel.value);
-  }
-
-  // Actualizar partidos jugados
-  nombresEq1.concat(nombresEq2).forEach(nombre => {
-    const jugador = jugadores.find(j => j.nombre === nombre);
-    if(jugador) jugador.partidos++;
-  });
-
-  // Guardar equipos en localStorage
-  localStorage.setItem("jugadoresHoyEq1", JSON.stringify(nombresEq1));
-  localStorage.setItem("jugadoresHoyEq2", JSON.stringify(nombresEq2));
-
-  // Actualizamos variables
-  jugadoresHoyEq1 = nombresEq1;
-  jugadoresHoyEq2 = nombresEq2;
-
-  guardarJugadores();
-  actualizarTodo();
-  alert("Partido registrado correctamente");
-}
-
-function generar8Ideal() {
-  // Calcular puntos según posición
-  jugadores.forEach(j => {
-    let puntos = 0;
-    switch(j.posicion) {
-      case "DEL":
-        puntos = j.goles*4 + j.asistencias*3 - j.amarillas*1 - j.rojas*3 + j.partidos*0.5;
-        break;
-      case "MED":
-        puntos = j.goles*5 + j.asistencias*4 - j.amarillas*1 - j.rojas*3 + j.partidos*0.5;
-        break;
-      case "DEF":
-        puntos = j.goles*6 + j.asistencias*5 - j.amarillas*1 - j.rojas*3 + j.partidos*0.5;
-        break;
-      case "POR":
-        puntos = j.goles*10 - j.amarillas*1 - j.rojas*3 + j.partidos*0.5;
-        break;
+  function modValue(nombre, campo, valor) {
+    valor = parseInt(valor);
+    if (isNaN(valor) || valor < 0) return;
+    const j = jugadores.find(j => j.nombre === nombre);
+    if (j) {
+      j[campo] = valor;
+      guardar();
+      actualizarTodo();
     }
-    j.puntos = puntos;
-  });
+  }
 
-  // Ordenar y seleccionar top 8
-  const top8 = jugadores.slice().sort((a,b) => b.puntos - a.puntos).slice(0,8);
+  function mod(nombre, campo, delta) {
+    const j = jugadores.find(j => j.nombre === nombre);
+    if (j) {
+      if (!j[campo]) j[campo] = 0;
+      j[campo] += delta;
+      if (j[campo] < 0) j[campo] = 0;
+      guardar();
+      actualizarTodo();
+    }
+  }
 
-  // Construir HTML para mostrar el 8 ideal
-  let html = `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%;">
-                <thead>
-                  <tr>
-                    <th>Jugador</th><th>Posición</th><th>Puntos</th>
-                  </tr>
-                </thead>
-                <tbody>`;
+  function eliminarJugador(nombre) {
+    if(confirm(`¿Eliminar jugador ${nombre}?`)) {
+      jugadores = jugadores.filter(j => j.nombre !== nombre);
+      guardar();
+      actualizarTodo();
+    }
+  }
 
-  top8.forEach(j => {
-    html += `<tr>
-               <td>${j.nombre}</td>
-               <td>${j.posicion}</td>
-               <td>${j.puntos.toFixed(2)}</td>
-             </tr>`;
-  });
+  function agregarJugador() {
+    const nombre = document.getElementById("nombre").value.trim();
+    const posicion = document.getElementById("posicion").value;
+    if (!nombre) {
+      alert("Introduce un nombre válido");
+      return;
+    }
+    if (jugadores.find(j => j.nombre.toLowerCase() === nombre.toLowerCase())) {
+      alert("Ese jugador ya existe");
+      return;
+    }
+    jugadores.push({ nombre, posicion, goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0, encajados: 0 });
+    guardar();
+    actualizarTodo();
+    document.getElementById("nombre").value = "";
+    llenarSelectsPartido(); // Actualizar selects tras añadir jugador
+  }
 
-  html += "</tbody></table>";
+  // Funciones de actualización para las tablas de estadísticas
+  function actualizarGoleadores() {
+    const tbody = document.getElementById("tabla-goleadores");
+    const sorted = [...jugadores].sort((a,b) => (b.goles||0) - (a.goles||0));
+    tbody.innerHTML = "";
+    sorted.forEach((j,i) => {
+      if ((j.goles||0) > 0) {
+        tbody.innerHTML += `<tr><td>${i+1}</td><td>${j.nombre}</td><td>${j.goles||0}</td><td>${j.partidos||0}</td></tr>`;
+      }
+    });
+  }
 
-  // Mostrar en el div
-  document.getElementById("ocho-ideal").innerHTML = html;
-}
+  function actualizarTarjetas() {
+    const tbody = document.getElementById("tabla-tarjetas");
+    const sorted = [...jugadores].sort((a,b) => ((b.amarillas||0)+(b.rojas||0)) - ((a.amarillas||0)+(a.rojas||0)));
+    tbody.innerHTML = "";
+    sorted.forEach((j,i) => {
+      if ((j.amarillas||0) > 0 || (j.rojas||0) > 0) {
+        tbody.innerHTML += `<tr><td>${i+1}</td><td>${j.nombre}</td><td>${j.amarillas||0}</td><td>${j.rojas||0}</td><td>${j.partidos||0}</td></tr>`;
+      }
+    });
+  }
 
+  function actualizarEficiencia() {
+    const tbody = document.getElementById("tabla-eficiencia");
+    const sorted = [...jugadores].filter(j => (j.partidos||0) > 0).sort((a,b) => ((b.goles||0)/(b.partidos||1)) - ((a.goles||0)/(a.partidos||1)));
+    tbody.innerHTML = "";
+    sorted.forEach((j,i) => {
+      const prom = ((j.goles||0) / (j.partidos||1)).toFixed(2);
+      tbody.innerHTML += `<tr><td>${i+1}</td><td>${j.nombre}</td><td>${j.partidos||0}</td><td>${j.goles||0}</td><td>${prom}</td></tr>`;
+    });
+  }
 
+  function actualizarTablaPorteros() {
+    const tbody = document.getElementById("tabla-porteros");
+    const porteros = jugadores.filter(j => j.posicion === "PT");
+    tbody.innerHTML = "";
+    porteros.forEach(j => {
+      tbody.innerHTML += `<tr><td>${j.nombre}</td><td>${j.asistencias||0}</td><td>${j.partidos||0}</td></tr>`;
+    });
+  }
 
+  function calcular7Ideal() {
+    const tbody = document.querySelector("#tabla-7ideal tbody");
+    tbody.innerHTML = "";
+    const conPuntos = jugadores.map(j => {
+      const puntos = (j.goles||0)*4 + (j.asistencias||0)*3 - (j.amarillas||0)*1 - (j.rojas||0)*3 + (j.partidos||0)*1;
+      const prom = (puntos / ((j.partidos||1))).toFixed(2);
+      return {...j, puntos, prom};
+    });
+    const top7 = conPuntos.sort((a,b) => b.puntos - a.puntos).slice(0,7);
+    top7.forEach((j,i) => {
+      tbody.innerHTML += `<tr>
+        <td>${i+1}</td><td>${j.nombre}</td><td>${j.posicion}</td><td>${j.puntos}</td><td>${j.prom}</td>
+      </tr>`;
+    });
+  }
 
-// Inicialización
-mostrarSeleccionJugadores();
-actualizarTodo();
-generar8Ideal();
-actualizarTopTablas();
-actualizarTablaJugadores();
+  // NUEVO: Llenar selects de partidos
+  function llenarSelectsPartido() {
+    const selLocal = document.getElementById("equipo-local");
+    const selVisitante = document.getElementById("equipo-visitante");
+    selLocal.innerHTML = "";
+    selVisitante.innerHTML = "";
+    jugadores.forEach(j => {
+      const option1 = document.createElement("option");
+      option1.value = j.nombre;
+      option1.textContent = `${j.nombre} (${j.posicion})`;
+      selLocal.appendChild(option1);
 
+      const option2 = document.createElement("option");
+      option2.value = j.nombre;
+      option2.textContent = `${j.nombre} (${j.posicion})`;
+      selVisitante.appendChild(option2);
+    });
+  }
+
+  // NUEVO: Mostrar 7 Ideal del partido
+  function filtrar7IdealPartido() {
+    const selLocal = document.getElementById("equipo-local");
+    const selVisitante = document.getElementById("equipo-visitante");
+    const seleccionados = new Set([
+      ...Array.from(selLocal.selectedOptions).map(o => o.value),
+      ...Array.from(selVisitante.selectedOptions).map(o => o.value)
+    ]);
+    if (seleccionados.size === 0) {
+      alert("Selecciona al menos un jugador en los equipos.");
+      return;
+    }
+    const tbody = document.querySelector("#tabla-7ideal-partido tbody");
+    tbody.innerHTML = "";
+    const jugadoresPartido = jugadores
+      .filter(j => seleccionados.has(j.nombre))
+      .map(j => {
+        const puntos = (j.goles||0)*4 + (j.asistencias||0)*3 - (j.amarillas||0)*1 - (j.rojas||0)*3 + (j.partidos||0)*1;
+        const prom = (puntos / ((j.partidos||1))).toFixed(2);
+        return {...j, puntos, prom};
+      })
+      .sort((a,b) => b.puntos - a.puntos)
+      .slice(0,7);
+    if (jugadoresPartido.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5">No hay jugadores seleccionados con datos.</td></tr>`;
+      return;
+    }
+    jugadoresPartido.forEach((j,i) => {
+      tbody.innerHTML += `<tr>
+        <td>${i+1}</td><td>${j.nombre}</td><td>${j.posicion}</td><td>${j.puntos}</td><td>${j.prom}</td>
+      </tr>`;
+    });
+  }
+
+  // NUEVO: Reset tabla partido
+  function resetearFiltroPartido() {
+    const tbody = document.querySelector("#tabla-7ideal-partido tbody");
+    tbody.innerHTML = "";
+  }
+
+  // Control de edición con password
+  function pedirPassword() {
+    const pass = prompt("Introduce la contraseña para editar datos:");
+    if (pass === password) {
+      document.getElementById("panel-edicion").style.display = "block";
+      document.getElementById("btn-editar").style.display = "none";
+    } else {
+      alert("Contraseña incorrecta.");
+    }
+  }
+
+  function cerrarEdicion() {
+    document.getElementById("panel-edicion").style.display = "none";
+    document.getElementById("btn-editar").style.display = "inline-block";
+    actualizarTodo();
+  }
+
+  function actualizarTodo() {
+    actualizarTablaSoloLectura();
+    actualizarTablaPrincipal();
+    actualizarGoleadores();
+    actualizarTarjetas();
+    actualizarEficiencia();
+    actualizarTablaPorteros();
+    calcular7Ideal();
+    llenarSelectsPartido();
+  }
+
+  actualizarTodo();
