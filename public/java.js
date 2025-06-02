@@ -104,7 +104,7 @@
     guardar();
     actualizarTodo();
     document.getElementById("nombre").value = "";
-    llenarSelectsPartido(); // Actualizar selects tras añadir jugador
+    llenarSelectsPartido(); 
   }
 
   // Funciones de actualización para las tablas de estadísticas

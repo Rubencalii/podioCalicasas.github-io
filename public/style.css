@@ -8,7 +8,7 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #00741d;
-  color: #f0f0f0;  /* texto claro para contraste con verde */
+  color: #f0f0f0;  
   line-height: 1.6;
   padding: 20px;
   min-height: 100vh;
@@ -19,7 +19,7 @@ h1 {
   text-align: center;
   font-size: 3rem;
   margin-bottom: 30px;
-  color: #000000; /* azul oscuro */
+  color: #ffffff; 
   text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
   font-weight: 900;
 }
@@ -36,16 +36,16 @@ h1 {
 table {
   width: 100%;
   border-collapse: collapse;
-  background: #1b4d1b;  /* verde oscuro para tabla */
+  background: #1b4d1b; 
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  color: #f0f0f0; /* texto claro dentro tabla */
+  color: #f0f0f0; 
 }
 
 /* Caption como título de tabla */
 caption {
-  background-color: #28a428; /* verde más brillante */
+  background-color: #28a428; 
   color: white;
   font-weight: 700;
   padding: 12px 0;
@@ -72,7 +72,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background-color: #3a773a; /* verde más claro al pasar el mouse */
+  background-color: #3a773a; 
 }
 
 /* Celdas */
