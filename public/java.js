@@ -21,8 +21,8 @@ function registrarIniciales() {
       { nombre: "Rafa", posicion: "MD", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0},
       { nombre: "CarlosGonzalez", posicion: "MD", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0},
       { nombre: "Jose.Alcala", posicion: "MD", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0},
-      { nombre: "CarlosP", posicion: "MD", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0},
-      { nombre: "Jose.Angel", posicion: "MD", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0},
+      { nombre: "CarlosP", posicion: "DEL", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0},
+      { nombre: "Jose.Angel", posicion: "DEL", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0},
       {nombre: "Raul", posicion: "MD", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0},
       { nombre: "Horacio", posicion: "DEL", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0}
     );
