@@ -1,276 +1,146 @@
-/* Reset básico */
-* {
+/* General */
+body {
+  font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  background: linear-gradient(to bottom, #0f5132, #14532d);
+  color: #fff;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #00741d;
-  color: #f0f0f0;  
-  line-height: 1.6;
-  padding: 20px;
-  min-height: 100vh;
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  background-color: #1e3a1e;
+  padding: 12px 24px;
+  border-bottom: 3px solid #2ecc71;
 }
 
-/* Título principal */
-h1 {
-  text-align: center;
-  font-size: 3rem;
-  margin-bottom: 30px;
-  color: #ffffff; 
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-  font-weight: 900;
+header img {
+  margin-right: 15px;
 }
 
-/* Contenedor tablas superiores */
-.top-tables {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-  gap: 20px;
-  margin-bottom: 40px;
+header h1 {
+  font-size: 2em;
+  margin: 0;
 }
 
-/* Estilo tablas */
+/* Tablas */
 table {
   width: 100%;
   border-collapse: collapse;
-  background: #1b4d1b; 
+  margin: 12px auto;
+  background-color: #2d6a4f;
+  color: white;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  color: #f0f0f0; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Caption como título de tabla */
 caption {
-  background-color: #28a428; 
-  color: white;
-  font-weight: 700;
-  padding: 12px 0;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
-  user-select: none;
+  background-color: #1b4332;
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 10px;
 }
 
-/* Encabezados */
-thead th {
-  background-color: #28a428; 
-  color: white;
+th, td {
   padding: 10px;
   text-align: center;
-  font-weight: 600;
-  font-size: 0.95rem;
-  border-bottom: 2px solid #196619;
+  border-bottom: 1px solid #40916c;
 }
 
-/* Filas */
-tbody tr {
-  border-bottom: 1px solid #3a773a;
-  transition: background-color 0.3s ease;
+thead {
+  background-color: #1b4332;
 }
 
-tbody tr:hover {
-  background-color: #3a773a; 
+/* Columnas de posiciones */
+td:first-child {
+  font-weight: bold;
 }
 
-/* Celdas */
-td {
-  text-align: center;
-  padding: 10px;
-  font-size: 0.9rem;
-  color: #e0e0e0;
-}
-
-/* Inputs numéricos en edición */
-input[type="number"] {
-  width: 60px;
-  padding: 5px;
-  font-size: 0.9rem;
-  border-radius: 5px;
-  border: 1px solid #5aa75a;
-  text-align: center;
-  background: #d6f0d6;
-  color: #144214;
-  transition: border-color 0.3s ease;
-}
-
-input[type="number"]:focus {
-  border-color: #196619;
-  outline: none;
-}
-
-/* Botones pequeños en filas de edición */
+/* Botones */
 button {
-  background-color: #196619;
+  background-color: #1e7f50;
   color: white;
   border: none;
-  padding: 6px 8px;
-  margin: 2px 1px;
-  border-radius: 5px;
-  font-size: 0.75rem;
+  padding: 8px 14px;
+  margin: 6px;
+  border-radius: 6px;
+  font-size: 1em;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  user-select: none;
 }
 
 button:hover {
-  background-color: #28a428;
+  background-color: #2ecc71;
 }
 
-/* Botones principales */
-#btn-editar, 
-button[onclick="cerrarEdicion()"], 
-.add-player button,
-#panel-partido button {
-  display: inline-block;
-  background-color: #28a428;
-  color: white;
-  border-radius: 30px;
-  padding: 12px 24px;
-  font-size: 1rem;
+/* Inputs */
+input, select {
+  padding: 6px;
+  border-radius: 4px;
   border: none;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.25s ease;
-  user-select: none;
+  margin: 4px;
 }
 
-#btn-editar:hover,
-button[onclick="cerrarEdicion()"]:hover,
-.add-player button:hover,
-#panel-partido button:hover {
-  background-color: #196619;
-}
-
-/* Panel edición */
-#panel-edicion {
-  margin-top: 30px;
+/* Secciones */
+main {
   padding: 20px;
-  background-color: #c8e6c9;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(25, 118, 210, 0.3);
-  color: #144214;
+  max-width: 1000px;
+  margin: auto;
 }
 
-/* Formulario añadir jugador */
-.add-player {
-  margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
+section {
+  margin-bottom: 30px;
 }
 
-.add-player input[type="text"] {
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 30px;
-  border: 1px solid #5aa75a;
-  width: 250px;
-  transition: border-color 0.3s ease;
-  color: #144214;
+/* Tablas lado a lado */
+.top-tables {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
-.add-player input[type="text"]:focus {
-  border-color: #196619;
-  outline: none;
-}
-
-.add-player select {
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 30px;
-  border: 1px solid #5aa75a;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-  color: #144214;
-}
-
-.add-player select:focus {
-  border-color: #196619;
-  outline: none;
-}
-
-/* Contenedor del partido */
-#panel-partido {
-  margin-top: 40px;
-  background-color: #d0f0d0;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px rgba(57, 145, 57, 0.2);
-  color: #144214;
-}
-
-/* Selección equipos */
+/* Equipo selección */
 .equipo-select {
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 20px;
+  margin-bottom: 10px;
 }
 
-.equipo-select div {
-  flex: 1 1 300px;
-  min-width: 280px;
-  max-width: 350px;
+.equipo-select select {
+  width: 180px;
+  height: 100px;
 }
 
-.equipo-select label {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #196619;
-  user-select: none;
+/* Tabla no editable */
+.tabla-no-editable {
+  background-color: #2d6a4f;
 }
 
-/* Select múltiple */
-select[multiple] {
-  width: 100%;
-  height: 200px;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #5aa75a;
-  font-size: 1rem;
-  cursor: pointer;
-  background-color: #e6f4e6;
-  color: #144214;
-  transition: border-color 0.3s ease;
+/* Tabla editable */
+.tabla-editable {
+  background-color: #22543d;
 }
 
-select[multiple]:focus {
-  border-color: #196619;
-  outline: none;
+/* 7 Ideal */
+#ideal-partido {
+  text-align: center;
 }
 
-/* Tabla 7 ideal partido */
-#tabla-7ideal-partido {
-  margin-top: 20px;
+/* Botón editar fijo abajo */
+#btn-editar {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999;
+  background-color: #2c7a7b;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .top-tables {
-    grid-template-columns: 1fr 1fr;
-  }
-  .equipo-select {
-    flex-direction: column;
-    align-items: center;
-  }
-  .equipo-select div {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .top-tables {
-    grid-template-columns: 1fr;
-  }
-  .add-player {
-    flex-direction: column;
-  }
-  .add-player input, .add-player select, .add-player button {
-    width: 100%;
-  }
+/* Logo fútbol */
+.logo-futbol img {
+  width: 40px;
+  height: 40px;
 }

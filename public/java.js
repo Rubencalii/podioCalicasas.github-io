@@ -4,7 +4,7 @@ function registrarIniciales() {
   const nombresIniciales = [
     "Rubén", "Horacio", "Torres", "Jose.Alcala", "Kiko", "Purpi", "Ivan", "Molero",
     "Pablo", "Rafa", "CarlosGonzalez", "CarlosP", "Jose.Angel", "Raul", "Vicente",
-    "CarlosSanchez", "Alvaro", "Javi", "Xaxi"
+    "CarlosSanchez", "Alvaro", "Javi", "Xaxi", "Diego", "DaniG", "Antonio"
   ];
   const yaExisten = jugadores.some(j => nombresIniciales.includes(j.nombre));
 
@@ -28,11 +28,19 @@ function registrarIniciales() {
       { nombre: "Jose.Angel", posicion: "DEL", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
       { nombre: "Raul", posicion: "DEL", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
       { nombre: "Xaxi", posicion: "DEL", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
-      { nombre: "Horacio", posicion: "DEL", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 }
+      { nombre: "Horacio", posicion: "DEL", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
+      { nombre: "DaniG", posicion: "DF", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
+      { nombre: "Diego", posicion: "???", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
+      { nombre: "Antonio", posicion: "DEL", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 }
     );
     guardar();
   }
 }
+
+const td = document.createElement('td');
+td.classList.add(`posicion-${jugador.posicion}`);
+td.textContent = jugador.nombre;
+
 
 const password = "Rcorralr123";
 
@@ -44,7 +52,7 @@ function actualizarTablaSoloLectura() {
   const tbody = document.getElementById("tabla-jugadores-body-solo-lectura");
   tbody.innerHTML = "";
   jugadores.forEach(j => {
-    tbody.innerHTML += `
+    tbody.innerHTML += 
       <tr>
         <td>${j.nombre}</td>
         <td>${j.posicion}</td>
@@ -54,7 +62,7 @@ function actualizarTablaSoloLectura() {
         <td>${j.rojas || 0}</td>
         <td>${j.partidos || 0}</td>
       </tr>
-    `;
+    ;
   });
 }
 
@@ -62,7 +70,7 @@ function actualizarTablaPrincipal() {
   const tbody = document.getElementById("tabla-jugadores-body");
   tbody.innerHTML = "";
   jugadores.forEach(j => {
-    tbody.innerHTML += `
+    tbody.innerHTML += 
       <tr>
         <td>${j.nombre}</td>
         <td>${j.posicion}</td>
@@ -85,7 +93,7 @@ function actualizarTablaPrincipal() {
           <button onclick="eliminarJugador('${j.nombre}')">Eliminar</button>
         </td>
       </tr>
-    `;
+    ;
   });
 }
 
@@ -143,10 +151,32 @@ function actualizarGoleadores() {
   tbody.innerHTML = "";
   sorted.forEach((j, i) => {
     if ((j.goles || 0) > 0) {
-      tbody.innerHTML += `<tr><td>${i + 1}</td><td>${j.nombre}</td><td>${j.goles || 0}</td><td>${j.partidos || 0}</td></tr>`;
+      tbody.innerHTML += <tr><td>${i + 1}</td><td>${j.nombre}</td><td>${j.goles || 0}</td><td>${j.partidos || 0}</td></tr>;
     }
   });
 }
+
+function mostrarAsistencias(jugadores) {
+  const tbody = document.getElementById('tabla-asistencias');
+  tbody.innerHTML = ''; 
+
+  // Filtrar solo jugadores con asistencias > 0
+  const jugadoresConAsistencias = jugadores.filter(j => j.asistencias > 0);
+
+  jugadoresConAsistencias.forEach(jugador => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${jugador.nombre}</td>
+    <td>${jugador.asistencias}</td>
+    <td>${jugador.partidos}</td>
+  `;
+  tbody.appendChild(tr);
+});
+
+
+
+// Al actualizar o cargar jugadores, llama a mostrarAsistencias:
+mostrarAsistencias(jugadores);
 
 function actualizarTarjetas() {
   const tbody = document.getElementById("tabla-tarjetas");
@@ -154,7 +184,7 @@ function actualizarTarjetas() {
   tbody.innerHTML = "";
   sorted.forEach((j, i) => {
     if ((j.amarillas || 0) > 0 || (j.rojas || 0) > 0) {
-      tbody.innerHTML += `<tr><td>${i + 1}</td><td>${j.nombre}</td><td>${j.amarillas || 0}</td><td>${j.rojas || 0}</td><td>${j.partidos || 0}</td></tr>`;
+      tbody.innerHTML += <tr><td>${i + 1}</td><td>${j.nombre}</td><td>${j.amarillas || 0}</td><td>${j.rojas || 0}</td><td>${j.partidos || 0}</td></tr>;
     }
   });
 }
@@ -165,45 +195,78 @@ function actualizarEficiencia() {
   tbody.innerHTML = "";
   sorted.forEach((j, i) => {
     const prom = ((j.goles || 0) / (j.partidos || 1)).toFixed(2);
-    tbody.innerHTML += `<tr><td>${i + 1}</td><td>${j.nombre}</td><td>${j.partidos || 0}</td><td>${j.goles || 0}</td><td>${prom}</td></tr>`;
+    tbody.innerHTML += <tr><td>${i + 1}</td><td>${j.nombre}</td><td>${j.partidos || 0}</td><td>${j.goles || 0}</td><td>${prom}</td></tr>;
   });
 }
 
-// ⚠️ Esta función fue eliminada: actualizarTablaPorteros()
+const equipos = ["Equipo A", "Equipo B", "Equipo C", "Equipo D"];
 
-function calcular7Ideal() {
-  const tbody = document.querySelector("#tabla-7ideal tbody");
-  tbody.innerHTML = "";
-  const conPuntos = jugadores.map(j => {
-    const puntos = (j.goles || 0) * 4 + (j.asistencias || 0) * 3 - (j.amarillas || 0) * 1 - (j.rojas || 0) * 3 + (j.partidos || 0) * 1;
-    const prom = (puntos / (j.partidos || 1)).toFixed(2);
-    return { ...j, puntos, prom };
-  });
-  const top7 = conPuntos.sort((a, b) => b.puntos - a.puntos).slice(0, 7);
-  top7.forEach((j, i) => {
-    tbody.innerHTML += `<tr>
-      <td>${i + 1}</td><td>${j.nombre}</td><td>${j.posicion}</td><td>${j.puntos}</td><td>${j.prom}</td>
-    </tr>`;
-  });
+function obtenerSeleccion(selectId) {
+  const select = document.getElementById(selectId);
+  const seleccionados = Array.from(select.selectedOptions).map(opt => opt.text);
+  return seleccionados;
 }
 
-function llenarSelectsPartido() {
-  const selLocal = document.getElementById("equipo-local");
-  const selVisitante = document.getElementById("equipo-visitante");
-  selLocal.innerHTML = "";
-  selVisitante.innerHTML = "";
+
+function actualizarEquipos() {
+  const equipo1Jugadores = obtenerSeleccion("equipo1");
+  const equipo2Jugadores = obtenerSeleccion("equipo2");
+
+  document.getElementById("lista-equipo1").textContent = equipo1Jugadores.join(", ") || "Sin jugadores";
+  document.getElementById("lista-equipo2").textContent = equipo2Jugadores.join(", ") || "Sin jugadores";
+}
+
+
+document.getElementById("btn-actualizar-equipos").addEventListener("click", actualizarEquipos);
+
+
+document.getElementById("equipo1").addEventListener("change", actualizarEquipos);
+document.getElementById("equipo2").addEventListener("change", actualizarEquipos);
+
+function cargarOpcionesEquipos() {
+  const equipo1 = document.getElementById("equipo1");
+  const equipo2 = document.getElementById("equipo2");
+
+  equipo1.innerHTML = "";
+  equipo2.innerHTML = "";
+
   jugadores.forEach(j => {
     const option1 = document.createElement("option");
     option1.value = j.nombre;
-    option1.textContent = `${j.nombre} (${j.posicion})`;
-    selLocal.appendChild(option1);
+    option1.text = j.nombre;
+    equipo1.appendChild(option1);
 
     const option2 = document.createElement("option");
     option2.value = j.nombre;
-    option2.textContent = `${j.nombre} (${j.posicion})`;
-    selVisitante.appendChild(option2);
+    option2.text = j.nombre;
+    equipo2.appendChild(option2);
   });
 }
+
+
+function borrarEquipos() {
+
+  const equipo1 = document.getElementById("equipo1");
+  const equipo2 = document.getElementById("equipo2");
+
+  // Quitar selección de todos los options
+  Array.from(equipo1.options).forEach(option => option.selected = false);
+  Array.from(equipo2.options).forEach(option => option.selected = false);
+
+
+  document.getElementById("lista-equipo1").textContent = "";
+  document.getElementById("lista-equipo2").textContent = "";
+}
+document.getElementById("btn-borrar-equipos").addEventListener("click", borrarEquipos);
+
+
+// Llamar esta función cuando cargue el DOM
+document.addEventListener("DOMContentLoaded", () => {
+  cargarOpcionesEquipos();
+  actualizarEquipos();
+});
+
+
 
 function filtrar7IdealPartido() {
   const selLocal = document.getElementById("equipo-local");
@@ -228,11 +291,67 @@ function filtrar7IdealPartido() {
     .sort((a, b) => b.puntos - a.puntos)
     .slice(0, 7);
   jugadoresPartido.forEach((j, i) => {
-    tbody.innerHTML += `<tr>
+    tbody.innerHTML += <tr>
       <td>${i + 1}</td><td>${j.nombre}</td><td>${j.posicion}</td><td>${j.puntos}</td><td>${j.prom}</td>
-    </tr>`;
+    </tr>;
   });
 }
+
+function calcular7Ideal(jugadores, equipo1Ids, equipo2Ids) {
+  const tbody = document.querySelector("#tabla-7ideal-partido tbody");
+  tbody.innerHTML = "";
+
+  // Filtrar solo jugadores que están en los equipos seleccionados
+  const jugadoresEnPartido = jugadores.filter(j =>
+    equipo1Ids.includes(j.nombre) || equipo2Ids.includes(j.nombre)
+  );
+
+  // Añadir puntos y promedio a cada jugador
+  const conPuntos = jugadoresEnPartido.map(j => {
+    const puntos = (j.goles || 0) * 4
+      + (j.asistencias || 0) * 3
+      - (j.amarillas || 0) * 1
+      - (j.rojas || 0) * 3
+      + (j.partidos || 0) * 1;
+    const prom = (puntos / (j.partidos || 1)).toFixed(2);
+    return { ...j, puntos, prom };
+  });
+
+  // Función para obtener N mejores jugadores por posición
+  function mejoresPorPosicion(posicion, n) {
+    return conPuntos
+      .filter(j => j.posicion === posicion)
+      .sort((a, b) => b.puntos - a.puntos)
+      .slice(0, n);
+  }
+
+  // Elegir 3 defensas, 2 mediocampistas y 2 delanteros
+  const defensas = mejoresPorPosicion('DF', 3);
+  const mediocampistas = mejoresPorPosicion('MD', 2);
+  const delanteros = mejoresPorPosicion('DEL', 2);
+
+  // Combinar el 7 ideal
+  const ideal = [...defensas, ...mediocampistas, ...delanteros];
+
+  // Mostrar en la tabla
+  ideal.forEach((j, i) => {
+    tbody.innerHTML += <tr>
+      <td>${i + 1}</td>
+      <td>${j.nombre}</td>
+      <td>${j.posicion}</td>
+      <td>${j.puntos}</td>
+      <td>${j.prom}</td>
+    </tr>;
+  });
+}
+
+document.getElementById('btn-mostrar-7ideal').addEventListener('click', () => {
+  const equipo1 = Array.from(document.getElementById('equipo1').selectedOptions).map(opt => opt.value);
+  const equipo2 = Array.from(document.getElementById('equipo2').selectedOptions).map(opt => opt.value);
+  calcular7Ideal(jugadores, equipo1, equipo2);
+});
+
+
 
 function resetearFiltroPartido() {
   const tbody = document.querySelector("#tabla-7ideal-partido tbody");
@@ -267,3 +386,4 @@ function actualizarTodo() {
 
 registrarIniciales();
 actualizarTodo();
+}

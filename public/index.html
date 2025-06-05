@@ -5,125 +5,212 @@
   <title>Peña Calicasas</title>
   <link rel="icon" href="./img/escudo.jpeg" />
   <link rel="stylesheet" href="style.css">
-
 </head>
 <body>
-  <h1>Peña Calicasas</h1>
-
-  <div class="top-tables">
-    <div class="tabla-goleadores">
-      <table>
-        <caption>Goleadores</caption>
-        <thead>
-          <tr><th>#</th><th>Jugador</th><th>⚽</th><th>Partidos🎮</th></tr>
-        </thead>
-        <tbody id="tabla-goleadores"></tbody>
-      </table>
+  
+  <header>
+    <div class="logo-futbol" aria-hidden="true">
+      <svg viewBox="0 0 64 64" width="50" height="50" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Balón de fútbol">
+        <circle cx="32" cy="32" r="30" fill="#fff" stroke="#e10600" stroke-width="3"/>
+        <polygon points="32,12 22,22 26,36 38,36 42,22" fill="#e10600"/>
+        <polygon points="32,12 42,22 46,36 38,36 26,36" fill="#a00000"/>
+        <polygon points="22,22 12,32 18,44 26,36" fill="#a00000"/>
+        <polygon points="46,36 54,44 50,32 42,22" fill="#a00000"/>
+        <polygon points="18,44 26,54 38,54 46,44 38,36" fill="#e10600"/>
+      </svg>
     </div>
-    <div class="tabla-asistencias">
-      <table>
-        <caption>Asistencias</caption>
+    <h1>Peña Calicasas</h1>
+  </header>
+
+  <main>
+    <!-- Sección principal con tablas estadísticas -->
+    <section class="top-tables">
+      <article class="tabla-goleadores">
+        <table>
+          <caption>Goleadores</caption>
+          <thead>
+            <tr><th>#</th><th>Jugador</th><th>⚽</th><th>Partidos🎮</th></tr>
+          </thead>
+          <tbody id="tabla-goleadores"></tbody>
+        </table>
+      </article>
+
+      <article class="tabla-asistencias">
+        <table>
+          <caption>Asistencias</caption>
+          <thead>
+            <tr><th>Jugador</th><th>🅰️</th><th>Partidos🎮</th></tr>
+          </thead>
+          <tbody id="tabla-asistencias"></tbody>
+        </table>
+      </article>
+
+      <article class="tabla-tarjetas">
+        <table>
+          <caption>Tarjetas</caption>
+          <thead>
+            <tr><th>#</th><th>Jugador</th><th>
+              <!-- Icono tarjeta amarilla -->
+              <svg width="16" height="24" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle;">
+                <rect width="20" height="30" rx="3" ry="3" fill="#ffea00" stroke="#b3a300" stroke-width="1"/>
+              </svg>
+            </th><th>
+              <!-- Icono tarjeta roja -->
+              <svg width="16" height="24" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle;">
+                <rect width="20" height="30" rx="3" ry="3" fill="#e10600" stroke="#a30000" stroke-width="1"/>
+              </svg>
+            </th><th>Partidos🎮</th></tr>
+          </thead>
+          <tbody id="tabla-tarjetas"></tbody>
+        </table>
+      </article>
+
+      <article class="tabla-eficiencia">
+        <table>
+          <caption>Eficiencia (Goles por partido)</caption>
+          <thead>
+            <tr><th>#</th><th>Jugador</th><th>Partidos</th><th>⚽</th><th>Prom.</th></tr>
+          </thead>
+          <tbody id="tabla-eficiencia"></tbody>
+        </table>
+      </article>
+    </section>
+
+    <!-- Sección 7 Ideal -->
+    <section id="ideal-partido">
+      <table id="tabla-7ideal-partido">
+        <caption>7 Ideal del Partido</caption>
         <thead>
-          <tr><th>Jugador</th><th>🅰️</th><th>Partidos🎮</th></tr>
+          <tr>
+            <th>Jugador</th>
+            <th>Posición</th>
+            <th>Puntos</th>
+          </tr>
         </thead>
-        <tbody id="tabla-porteros"></tbody>
+        <tbody></tbody>
       </table>
-    </div>
-    <div class="tabla-tarjetas">
-      <table>
-        <caption>Tarjetas</caption>
-        <thead>
-          <tr><th>#</th><th>Jugador</th><th>🟨</th><th>🟥</th><th>Partidos🎮</th></tr>
-        </thead>
-        <tbody id="tabla-tarjetas"></tbody>
-      </table>
-    </div>
-    <div class="tabla-eficiencia">
-      <table>
-        <caption>Eficiencia (Goles por partido)</caption>
-        <thead>
-          <tr><th>#</th><th>Jugador</th><th>Partidos</th><th>⚽</th><th>Prom.</th></tr>
-        </thead>
-        <tbody id="tabla-eficiencia"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Tabla solo lectura visible siempre -->
-  <table class="tabla-no-editable" id="tabla-jugadores-solo-lectura">
-    <caption>Jugadores</caption>
-    <thead>
-      <tr>
-        <th>Jugador</th>
-        <th>Posición</th>
-        <th>Goles</th>
-        <th>Asistencias</th>
-        <th>🟨</th>
-        <th>🟥</th>
-        <th>Partidos</th>
-      </tr>
-    </thead>
-    <tbody id="tabla-jugadores-body-solo-lectura"></tbody>
-  </table>
-
-  <!-- Panel edición oculto -->
-  <div id="panel-edicion" style="display:none;">
-    <table class="tabla-editable" id="tabla-jugadores">
-      <caption>Editar Jugadores</caption>
-      <thead>
-        <tr>
-          <th>Jugador</th>
-          <th>Posición</th>
-          <th>Goles</th>
-          <th>Asistencias</th>
-          <th>🟨</th>
-          <th>🟥</th>
-          <th>Partidos</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="tabla-jugadores-body"></tbody>
-    </table>
-  </div>
-
-  <div class="add-player">
-    <input type="text" id="nombre" placeholder="Nombre jugador" />
-    <select id="posicion">
-      <option value="DEL">Delantero (DEL)</option>
-      <option value="MD">Mediocampista (MD)</option>
-      <option value="DF">Defensa (DF)</option>
-    </select>
-    <button onclick="agregarJugador()">Añadir Jugador</button>
-  </div>
-
-  <button id="btn-editar" onclick="pedirPassword()">Editar Datos</button>
-  <button onclick="cerrarEdicion()">Cerrar edición</button>
-  <!-- NUEVO: Partido de Hoy -->
-  <h2>Partido de Hoy</h2>
-  <div id="panel-partido">
-    <div class="equipo-select">
       <div>
-        <label><strong>Equipo Local</strong></label><br/>
-        <select id="equipo-local" multiple size="8"></select>
+        <button id="btn-mostrar-7ideal">
+          <!-- Icono balón pequeño -->
+          <svg width="20" height="20" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle; margin-right:5px;">
+            <circle cx="32" cy="32" r="30" fill="#fff" stroke="#e10600" stroke-width="2"/>
+            <polygon points="32,12 22,22 26,36 38,36 42,22" fill="#e10600"/>
+          </svg>
+          Mostrar 7 Ideal
+        </button>
+      </div>
+    </section>
+
+    <!-- Sección Partido de Hoy y selección equipos -->
+    <section id="partido-hoy">
+      <h2>Partido de Hoy</h2>
+      <div class="equipo-select">
+        <div>
+          <label for="equipo1">Equipo 1</label><br />
+          <select id="equipo1" multiple>
+            <!-- Opciones -->
+          </select>
+        </div>
+        <div>
+          <label for="equipo2">Equipo 2</label><br />
+          <select id="equipo2" multiple>
+            <!-- Opciones -->
+          </select>
+        </div>
+      </div>
+
+      <table id="tabla-equipos">
+        <caption>Jugadores en Partidos</caption>
+        <thead>
+          <tr><th>Equipo 1</th><th>Equipo 2</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td id="lista-equipo1"></td>
+            <td id="lista-equipo2"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div>
+        <button id="btn-actualizar-equipos">Actualizar Equipos</button>
       </div>
       <div>
-        <label><strong>Equipo Visitante</strong></label><br/>
-        <select id="equipo-visitante" multiple size="8"></select>
+        <button id="btn-borrar-equipos">Borrar Equipos</button>
       </div>
-    </div>
-    <div style="text-align:center; margin-top:10px;">
-      <button onclick="filtrar7IdealPartido()">Mostrar 7 Ideal del Partido</button>
-      <button onclick="resetearFiltroPartido()">Mostrar 7 Ideal General</button>
-    </div>
-    <table id="tabla-7ideal-partido">
-      <thead>
-        <tr><th>#</th><th>Jugador</th><th>Posición</th><th>Puntos</th><th>Promedio puntos</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+    </section>
 
-<script src="java.js"></script>
+    <!-- Tabla resumen jugadores solo lectura -->
+    <section id="tabla-jugadores-solo-lectura-section">
+      <table class="tabla-no-editable" id="tabla-jugadores-solo-lectura">
+        <caption>Jugadores</caption>
+        <thead>
+          <tr>
+            <th>Jugador</th>
+            <th>Posición</th>
+            <th>Goles</th>
+            <th>Asistencias</th>
+            <th>
+              <svg width="16" height="24" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle;">
+                <rect width="20" height="30" rx="3" ry="3" fill="#ffea00" stroke="#b3a300" stroke-width="1"/>
+              </svg>
+            </th>
+            <th>
+              <svg width="16" height="24" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle;">
+                <rect width="20" height="30" rx="3" ry="3" fill="#e10600" stroke="#a30000" stroke-width="1"/>
+              </svg>
+            </th>
+            <th>Partidos</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-jugadores-body-solo-lectura"></tbody>
+      </table>
+    </section>
 
+    <!-- Panel edición oculto -->
+    <section id="panel-edicion" style="display:none;">
+      <table class="tabla-editable" id="tabla-jugadores">
+        <caption>Editar Jugadores</caption>
+        <thead>
+          <tr>
+            <th>Jugador</th>
+            <th>Posición</th>
+            <th>Goles</th>
+            <th>Asistencias</th>
+            <th>
+              <svg width="16" height="24" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle;">
+                <rect width="20" height="30" rx="3" ry="3" fill="#ffea00" stroke="#b3a300" stroke-width="1"/>
+              </svg>
+            </th>
+            <th>
+              <svg width="16" height="24" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle;">
+                <rect width="20" height="30" rx="3" ry="3" fill="#e10600" stroke="#a30000" stroke-width="1"/>
+              </svg>
+            </th>
+            <th>Partidos</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-jugadores-body"></tbody>
+      </table>
+
+      <div class="add-player" style="margin-top: 12px;">
+        <input type="text" id="nombre" placeholder="Nombre jugador" />
+        <select id="posicion">
+          <option value="DEL">Delantero (DEL)</option>
+          <option value="MD">Mediocampista (MD)</option>
+          <option value="DF">Defensa (DF)</option>
+        </select>
+        <button onclick="agregarJugador()">Añadir Jugador</button>
+      </div>
+        
+      <div style="margin-top: 12px;">
+        <button onclick="cerrarEdicion()">Cerrar edición</button>
+      </div>
+    </section>
+    <button id="btn-editar" onclick="pedirPassword()">Editar Datos</button>
+  </main>
+
+  <script src="java.js"></script>
 </body>
 </html>
