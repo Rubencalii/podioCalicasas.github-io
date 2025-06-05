@@ -9,16 +9,6 @@
 <body>
   
   <header>
-    <div class="logo-futbol" aria-hidden="true">
-      <svg viewBox="0 0 64 64" width="50" height="50" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Balón de fútbol">
-        <circle cx="32" cy="32" r="30" fill="#fff" stroke="#e10600" stroke-width="3"/>
-        <polygon points="32,12 22,22 26,36 38,36 42,22" fill="#e10600"/>
-        <polygon points="32,12 42,22 46,36 38,36 26,36" fill="#a00000"/>
-        <polygon points="22,22 12,32 18,44 26,36" fill="#a00000"/>
-        <polygon points="46,36 54,44 50,32 42,22" fill="#a00000"/>
-        <polygon points="18,44 26,54 38,54 46,44 38,36" fill="#e10600"/>
-      </svg>
-    </div>
     <h1>Peña Calicasas</h1>
   </header>
 
@@ -50,12 +40,10 @@
           <caption>Tarjetas</caption>
           <thead>
             <tr><th>#</th><th>Jugador</th><th>
-              <!-- Icono tarjeta amarilla -->
               <svg width="16" height="24" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle;">
                 <rect width="20" height="30" rx="3" ry="3" fill="#ffea00" stroke="#b3a300" stroke-width="1"/>
               </svg>
             </th><th>
-              <!-- Icono tarjeta roja -->
               <svg width="16" height="24" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle;">
                 <rect width="20" height="30" rx="3" ry="3" fill="#e10600" stroke="#a30000" stroke-width="1"/>
               </svg>
@@ -90,14 +78,7 @@
         <tbody></tbody>
       </table>
       <div>
-        <button id="btn-mostrar-7ideal">
-          <!-- Icono balón pequeño -->
-          <svg width="20" height="20" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle; margin-right:5px;">
-            <circle cx="32" cy="32" r="30" fill="#fff" stroke="#e10600" stroke-width="2"/>
-            <polygon points="32,12 22,22 26,36 38,36 42,22" fill="#e10600"/>
-          </svg>
-          Mostrar 7 Ideal
-        </button>
+        <button id="btn-mostrar-7ideal">Mostrar 7 Ideal</button>
       </div>
     </section>
 
@@ -167,48 +148,26 @@
       </table>
     </section>
 
-    <!-- Panel edición oculto -->
-    <section id="panel-edicion" style="display:none;">
-      <table class="tabla-editable" id="tabla-jugadores">
-        <caption>Editar Jugadores</caption>
+    <button id="btn-editar" onclick="pedirPassword()">Editar</button>
+
+    <div id="panel-edicion" style="display:none;">
+      <button onclick="cerrarEdicion()">Cerrar edición</button>
+      <table>
         <thead>
           <tr>
-            <th>Jugador</th>
+            <th>Nombre</th>
             <th>Posición</th>
             <th>Goles</th>
             <th>Asistencias</th>
-            <th>
-              <svg width="16" height="24" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle;">
-                <rect width="20" height="30" rx="3" ry="3" fill="#ffea00" stroke="#b3a300" stroke-width="1"/>
-              </svg>
-            </th>
-            <th>
-              <svg width="16" height="24" viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" style="vertical-align:middle;">
-                <rect width="20" height="30" rx="3" ry="3" fill="#e10600" stroke="#a30000" stroke-width="1"/>
-              </svg>
-            </th>
+            <th>Amarillas</th>
+            <th>Rojas</th>
             <th>Partidos</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody id="tabla-jugadores-body"></tbody>
       </table>
-
-      <div class="add-player" style="margin-top: 12px;">
-        <input type="text" id="nombre" placeholder="Nombre jugador" />
-        <select id="posicion">
-          <option value="DEL">Delantero (DEL)</option>
-          <option value="MD">Mediocampista (MD)</option>
-          <option value="DF">Defensa (DF)</option>
-        </select>
-        <button onclick="agregarJugador()">Añadir Jugador</button>
-      </div>
-        
-      <div style="margin-top: 12px;">
-        <button onclick="cerrarEdicion()">Cerrar edición</button>
-      </div>
-    </section>
-    <button id="btn-editar" onclick="pedirPassword()">Editar Datos</button>
+    </div>
   </main>
 
   <script src="java.js"></script>
