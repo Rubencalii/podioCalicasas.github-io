@@ -1,7 +1,7 @@
 let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
 
 function guardar() {
-  localStorage.setItem("jugadores", JSON.stringify(jugadores));
+  localStorage.setItem("jugadores", JSON.stringify(jugadores));  // Guardar jugadores en localStorage
 }
 
 function registrarIniciales() {
@@ -55,12 +55,19 @@ function mostrarPanelEdicion() {
   const panel = document.getElementById("panel-edicion");
   panel.style.display = "block";
   document.getElementById("btn-editar").style.display = "none";
-  actualizarTablaPrincipal(); 
+  actualizarTablaPrincipal();
+}
+
+function cerrarEdicion() {
+  const panel = document.getElementById("panel-edicion");
+  if (panel) panel.style.display = "none";
+  document.getElementById("btn-editar").style.display = "inline-block";
 }
 
 function actualizarTablaPrincipal() {
   const tbody = document.getElementById("tabla-jugadores-body");
-  tbody.innerHTML = "";
+  tbody.innerHTML = "";  // Limpiar tabla antes de agregar nuevos datos
+
   jugadores.forEach(j => {
     tbody.innerHTML += `
       <tr>
@@ -71,49 +78,34 @@ function actualizarTablaPrincipal() {
         <td><input type="number" value="${j.amarillas}" onchange="modValue('${j.nombre}', 'amarillas', this.value)" /></td>
         <td><input type="number" value="${j.rojas}" onchange="modValue('${j.nombre}', 'rojas', this.value)" /></td>
         <td><input type="number" value="${j.partidos}" onchange="modValue('${j.nombre}', 'partidos', this.value)" /></td>
-        <td>
-          <button onclick="mod('${j.nombre}','goles',1)">+⚽</button>
-          <button onclick="mod('${j.nombre}','goles',-1)">-⚽</button>
-          <button onclick="mod('${j.nombre}','asistencias',1)">+🅰️</button>
-          <button onclick="mod('${j.nombre}','asistencias',-1)">-🅰️</button>
-          <button onclick="mod('${j.nombre}','amarillas',1)">+🟨</button>
-          <button onclick="mod('${j.nombre}','amarillas',-1)">-🟨</button>
-          <button onclick="mod('${j.nombre}','rojas',1)">+🟥</button>
-          <button onclick="mod('${j.nombre}','rojas',-1)">-🟥</button>
-          <button onclick="mod('${j.nombre}','partidos',1)">+🎮</button>
-          <button onclick="mod('${j.nombre}','partidos',-1)">-🎮</button>
-          <button onclick="eliminarJugador('${j.nombre}')">Eliminar</button>
-        </td>
+        <td><button onclick="eliminarJugador('${j.nombre}')">Eliminar</button></td>
       </tr>
     `;
   });
 }
 
+function modValue(nombre, tipo, valor) {
+  valor = parseInt(valor, 10);
+  if (isNaN(valor)) {
+    alert("Valor no válido");
+    return;
+  }
 
-function cerrarEdicion() {
-  const panel = document.getElementById("panel-edicion");
-  if (panel) panel.style.display = "none";
-  document.getElementById("btn-editar").style.display = "inline-block";
+  const jugador = jugadores.find(j => j.nombre === nombre);
+  if (jugador) {
+    jugador[tipo] = valor;
+    guardar();
+    actualizarTablaPrincipal();
+  }
 }
 
-function actualizarTablaSoloLectura() {
-  const tbody = document.getElementById("tabla-jugadores-body-solo-lectura");
-  tbody.innerHTML = "";
-  jugadores.forEach(j => {
-    tbody.innerHTML += `
-      <tr>
-        <td>${j.nombre}</td>
-        <td>${j.posicion}</td>
-        <td>${j.goles || 0}</td>
-        <td>${j.asistencias || 0}</td>
-        <td>${j.amarillas || 0}</td>
-        <td>${j.rojas || 0}</td>
-        <td>${j.partidos || 0}</td>
-      </tr>
-    `;
-  });
+function eliminarJugador(nombre) {
+  jugadores = jugadores.filter(j => j.nombre !== nombre);
+  guardar();
+  actualizarTablaPrincipal();
 }
 
+// Tabla de estadísticas
 function actualizarGoleadores() {
   const tbody = document.getElementById("tabla-goleadores");
   const sorted = [...jugadores].sort((a, b) => (b.goles || 0) - (a.goles || 0));
@@ -128,18 +120,15 @@ function actualizarGoleadores() {
 function mostrarAsistencias(jugadores) {
   const tbody = document.getElementById('tabla-asistencias');
   tbody.innerHTML = '';
-
-  jugadores
-    .filter(j => j.asistencias > 0)
-    .forEach(j => {
-      tbody.innerHTML += `
-        <tr>
-          <td>${j.nombre}</td>
-          <td>${j.asistencias}</td>
-          <td>${j.partidos}</td>
-        </tr>
-      `;
-    });
+  jugadores.filter(j => j.asistencias > 0).forEach(j => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${j.nombre}</td>
+        <td>${j.asistencias}</td>
+        <td>${j.partidos}</td>
+      </tr>
+    `;
+  });
 }
 
 function actualizarTarjetas() {
@@ -155,8 +144,7 @@ function actualizarTarjetas() {
 
 function actualizarEficiencia() {
   const tbody = document.getElementById("tabla-eficiencia");
-  const sorted = jugadores
-    .filter(j => (j.partidos || 0) > 0)
+  const sorted = jugadores.filter(j => (j.partidos || 0) > 0)
     .sort((a, b) => ((b.goles || 0) / b.partidos) - ((a.goles || 0) / a.partidos));
 
   tbody.innerHTML = "";
@@ -166,41 +154,12 @@ function actualizarEficiencia() {
   });
 }
 
-function calcular7Ideal(jugadores, equipo1, equipo2) {
-  const todos = [...equipo1, ...equipo2];
-  const jugadoresPartido = jugadores.filter(j => todos.includes(j.nombre)).map(j => {
-    const puntos = (j.goles || 0) * 4 + (j.asistencias || 0) * 3 - (j.amarillas || 0) * 1 - (j.rojas || 0) * 3 + (j.partidos || 0) * 1;
-    const prom = (puntos / (j.partidos || 1)).toFixed(2);
-    return { ...j, puntos, prom };
-  });
-
-  const ideal = jugadoresPartido
-    .sort((a, b) => b.puntos - a.puntos)
-    .slice(0, 7);
-
-  const tbody = document.querySelector("#tabla-7ideal-partido tbody");
-  tbody.innerHTML = "";
-  ideal.forEach(j => {
-    tbody.innerHTML += `
-      <tr>
-        <td>${j.nombre}</td>
-        <td>${j.posicion}</td>
-        <td>${j.puntos}</td>
-      </tr>
-    `;
-  });
-}
-
-function obtenerSeleccion(selectId) {
-  return Array.from(document.getElementById(selectId).selectedOptions).map(opt => opt.value);
-}
-
-// Función para cargar las opciones en los selectores (debes tener los selects en tu HTML)
+// Cargar las opciones de equipos para los selects
 function cargarOpcionesEquipos() {
   const equipo1 = document.getElementById("equipo1");
   const equipo2 = document.getElementById("equipo2");
 
-  if (!equipo1 || !equipo2) return; // Evitar error si no existen
+  if (!equipo1 || !equipo2) return;
 
   equipo1.innerHTML = "";
   equipo2.innerHTML = "";
@@ -218,14 +177,12 @@ function cargarOpcionesEquipos() {
   });
 }
 
-// Obtener jugadores seleccionados de un select
 function obtenerSeleccion(selectId) {
   const select = document.getElementById(selectId);
   if (!select) return [];
   return Array.from(select.selectedOptions).map(opt => opt.value);
 }
 
-// Actualizar la tabla con jugadores seleccionados
 function actualizarEquipos() {
   const equipo1Jugadores = obtenerSeleccion("equipo1");
   const equipo2Jugadores = obtenerSeleccion("equipo2");
@@ -233,16 +190,15 @@ function actualizarEquipos() {
   const lista1 = document.getElementById("lista-equipo1");
   const lista2 = document.getElementById("lista-equipo2");
 
-  lista1.innerHTML = equipo1Jugadores.length 
+  lista1.innerHTML = equipo1Jugadores.length
     ? "<ul>" + equipo1Jugadores.map(j => `<li>${j}</li>`).join("") + "</ul>"
     : "No hay jugadores";
 
-  lista2.innerHTML = equipo2Jugadores.length 
+  lista2.innerHTML = equipo2Jugadores.length
     ? "<ul>" + equipo2Jugadores.map(j => `<li>${j}</li>`).join("") + "</ul>"
     : "No hay jugadores";
 }
 
-// Borrar selección y tabla
 function borrarEquipos() {
   const equipo1 = document.getElementById("equipo1");
   const equipo2 = document.getElementById("equipo2");
@@ -253,28 +209,9 @@ function borrarEquipos() {
   actualizarEquipos();
 }
 
-// Event listeners para botones y selects
-document.addEventListener("DOMContentLoaded", () => {
-  cargarOpcionesEquipos();
-
-  document.getElementById("btn-actualizar-equipos").addEventListener("click", actualizarEquipos);
-  document.getElementById("btn-borrar-equipos").addEventListener("click", borrarEquipos);
-
-  // Si quieres actualizar al cambiar selección
-  const equipo1 = document.getElementById("equipo1");
-  const equipo2 = document.getElementById("equipo2");
-  if (equipo1) equipo1.addEventListener("change", actualizarEquipos);
-  if (equipo2) equipo2.addEventListener("change", actualizarEquipos);
-});
-
-function borrarEquipos() {
-  document.getElementById("equipo1").selectedIndex = -1;
-  document.getElementById("equipo2").selectedIndex = -1;
-  actualizarEquipos();
-}
-
+// Función para actualizar todo (con estadísticas)
 function actualizarTodo() {
-  actualizarTablaSoloLectura();
+  actualizarTablaPrincipal();
   actualizarGoleadores();
   mostrarAsistencias(jugadores);
   actualizarTarjetas();
@@ -283,16 +220,19 @@ function actualizarTodo() {
   actualizarEquipos();
 }
 
-// Eventos
-document.getElementById("btn-actualizar-equipos").addEventListener("click", actualizarEquipos);
-document.getElementById("btn-borrar-equipos").addEventListener("click", borrarEquipos);
-document.getElementById("btn-mostrar-7ideal").addEventListener("click", () => {
-  const equipo1 = obtenerSeleccion("equipo1");
-  const equipo2 = obtenerSeleccion("equipo2");
-  calcular7Ideal(jugadores, equipo1, equipo2);
-});
-
+// Event listeners para botones y selects
 document.addEventListener("DOMContentLoaded", () => {
   registrarIniciales();
   actualizarTodo();
+  cargarOpcionesEquipos();
+
+  document.getElementById("btn-actualizar-equipos").addEventListener("click", actualizarEquipos);
+  document.getElementById("btn-borrar-equipos").addEventListener("click", borrarEquipos);
+
+  document.getElementById("btn-mostrar-7ideal").addEventListener("click", () => {
+    const equipo1 = obtenerSeleccion("equipo1");
+    const equipo2 = obtenerSeleccion("equipo2");
+    calcular7Ideal(jugadores, equipo1, equipo2);
+  });
 });
+  
