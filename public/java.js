@@ -18,7 +18,7 @@ function registrarIniciales() {
       { nombre: "Rubén", posicion: "DF", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
       { nombre: "Vicente", posicion: "DF", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
       { nombre: "Alvaro", posicion: "DF", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
-      { nombre: "Javi", posicion: "DF", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
+      { nombre: "Javi", posicion: "MD", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
       { nombre: "Purpi", posicion: "DF", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
       { nombre: "Torres", posicion: "DF", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
       { nombre: "Ivan", posicion: "DF", goles: 0, asistencias: 0, amarillas: 0, rojas: 0, partidos: 0 },
@@ -208,6 +208,79 @@ function borrarEquipos() {
 
   actualizarEquipos();
 }
+// 7 Ideal 
+
+function calcularPuntos7Ideal(jugador, equipoGanador) {
+  let puntos = 0;
+  const { posicion, goles, asistencias, amarillas, rojas } = jugador;
+  const gano = equipoGanador.includes(jugador.nombre);
+
+  const pos = posicion.toUpperCase();
+  if (pos === "DEF" || pos === "DF") {
+    puntos += goles * 4;
+    puntos += asistencias * 3;
+  } else if (pos === "MD") {
+    puntos += goles * 4;
+    puntos += asistencias * 2;
+  } else if (pos === "DEL") {
+    puntos += goles * 3;
+    puntos += asistencias * 2;
+  }
+
+  puntos -= amarillas * 0.5;
+  puntos -= rojas * 1;
+  if (gano) puntos += 1;
+
+  return puntos;
+}
+
+function calcular7Ideal(jugadores, equipo1, equipo2) {
+  const equipo1Puntos = equipo1.reduce((acc, nombre) => {
+    const jugador = jugadores.find(j => j.nombre === nombre);
+    return acc + (jugador?.goles || 0);  // puedes cambiar esta lógica de victoria si es necesario
+  }, 0);
+
+  const equipo2Puntos = equipo2.reduce((acc, nombre) => {
+    const jugador = jugadores.find(j => j.nombre === nombre);
+    return acc + (jugador?.goles || 0);
+  }, 0);
+
+  const equipoGanador = equipo1Puntos > equipo2Puntos ? equipo1 : equipo2;
+
+  const jugadoresConPuntaje = jugadores.map(j => ({
+    ...j,
+    puntos: calcularPuntos7Ideal(j, equipoGanador)
+  }));
+
+  const top7 = jugadoresConPuntaje
+    .filter(j => j.puntos > 0) // opcional: excluir sin puntos
+    .sort((a, b) => b.puntos - a.puntos)
+    .slice(0, 7);
+
+  mostrar7IdealEnTabla(top7);
+}
+
+function mostrar7IdealEnTabla(jugadoresIdeal) {
+  const tbody = document.querySelector("#tabla-7ideal-partido tbody");
+  tbody.innerHTML = ""; // Limpiar tabla
+
+  jugadoresIdeal.forEach(j => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${j.nombre}</td>
+      <td>${j.posicion}</td>
+      <td>${j.puntos.toFixed(1)}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+document.getElementById("btn-mostrar-7ideal").addEventListener("click", () => {
+  const equipo1 = obtenerSeleccion("equipo1");
+  const equipo2 = obtenerSeleccion("equipo2");
+  calcular7Ideal(jugadores, equipo1, equipo2);
+});
+ 
 
 // Función para actualizar todo (con estadísticas)
 function actualizarTodo() {
